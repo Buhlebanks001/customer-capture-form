@@ -3,6 +3,7 @@
 
 <head>
     <title>Customer Capture Form</title>
+
     <link rel="stylesheet"
           href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -53,15 +54,25 @@
             <th>Last Name</th>
             <th>Email</th>
             <th>Phone</th>
+            <th>Action</th>
         </tr>
 
         {% for customer in customers %}
         <tr>
+
             <td>{{ customer[0] }}</td>
             <td>{{ customer[1] }}</td>
             <td>{{ customer[2] }}</td>
             <td>{{ customer[3] }}</td>
             <td>{{ customer[4] }}</td>
+
+            <td>
+                <a href="/delete/{{ customer[0] }}"
+                   onclick="return confirm('Delete this customer?')">
+                    Delete
+                </a>
+            </td>
+
         </tr>
         {% endfor %}
 

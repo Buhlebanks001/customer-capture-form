@@ -3,7 +3,7 @@ import sqlite3
 
 app = Flask(__name__)
 
-# Create database if it doesn't exist
+# Create database and table
 def init_db():
     conn = sqlite3.connect("customers.db")
     cursor = conn.cursor()
@@ -21,10 +21,9 @@ def init_db():
     conn.commit()
     conn.close()
 
-# Run database setup
 init_db()
 
-# Homepage
+# Home Page
 @app.route("/")
 def home():
 
@@ -41,7 +40,7 @@ def home():
         customers=customers
     )
 
-# Save customer
+# Add Customer
 @app.route("/add", methods=["POST"])
 def add_customer():
 
@@ -58,6 +57,23 @@ def add_customer():
         (first_name, last_name, email, phone)
         VALUES (?, ?, ?, ?)
     """, (first_name, last_name, email, phone))
+
+    conn.commit()
+    conn.close()
+
+    return redirect("/")
+
+# Delete Customer
+@app.route("/delete/<int:id>")
+def delete_customer(id):
+
+    conn = sqlite3.connect("customers.db")
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "DELETE FROM customers WHERE id = ?",
+        (id,)
+    )
 
     conn.commit()
     conn.close()
